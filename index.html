@@ -81,29 +81,21 @@ nav button.active,.btn.primary{background:#B91C68;color:#fff}
 @media(max-width:520px){.home-menu{grid-template-columns:1fr 1fr;gap:7px}.menu-tile{padding:9px;gap:7px}.menu-icon{width:32px;height:32px;flex-basis:32px}.menu-tile small{font-size:9px}.menu-arrow{font-size:15px}}
 .section-title{margin:0 0 6px}.metric-cash strong{color:#397b62}.metric-company strong{color:#80519a}.metric-sales strong{color:#9d5276}.purchase-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line,#eee)}.purchase-row:last-child{border-bottom:0}.purchase-row .small{display:block}.purchase-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.purchase-actions button{white-space:nowrap}@media(max-width:620px){.purchase-row{align-items:flex-start;flex-direction:column}.purchase-actions{width:100%}}
 
-/* Acesso e sincronização Supabase */
-#authScreen{position:fixed;inset:0;z-index:1000;background:linear-gradient(145deg,#fff1f7,#fffafd 55%,#f8eaf1);display:flex;align-items:center;justify-content:center;padding:20px}
-.auth-card{width:min(100%,420px);background:#fff;border:1px solid #E8DCE4;border-radius:22px;padding:28px;box-shadow:0 18px 55px #68405418}
-.auth-card h2{font:600 27px Georgia,serif;color:#A51B62;margin:0 0 6px}.auth-card p{color:#665563;font-size:13px;margin:0 0 20px}
-.auth-card .field{margin:12px 0}.auth-card input{border:1px solid #E8DCE4;border-radius:10px;padding:13px;width:100%;font:inherit}
-.auth-card button{width:100%;margin-top:10px}.auth-error{color:#B4233D;background:#FFE1E5;border-radius:10px;padding:10px;font-size:12px;margin-top:12px;display:none}
-#syncStatus{font-size:11px;color:#665563;margin-left:auto}
-@media(max-width:520px){.auth-card{padding:22px}}
+/* Autenticação Supabase */
+.auth-screen{position:fixed;inset:0;z-index:100;background:#FFFCFE;display:flex;align-items:center;justify-content:center;padding:18px}
+.auth-card{width:100%;max-width:410px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:0 12px 40px #68405412}
+.auth-brand{text-align:center;margin-bottom:22px}.auth-brand .gem{margin:0 auto 10px}.auth-brand h1{font:600 27px Georgia,serif;color:#A51B62;margin:0}.auth-card h2{font:600 21px Georgia,serif;margin:0 0 7px}.auth-card .field{margin:13px 0}.auth-card input{border:1px solid var(--line);border-radius:10px;padding:12px;width:100%;font:inherit;color:var(--ink)}.auth-card button{cursor:pointer}.auth-actions{display:grid;gap:9px;margin-top:17px}.auth-error{color:#B4233D;background:#FFE1E5;border-radius:9px;padding:10px;font-size:12px;display:none;margin-top:12px}.auth-note{font-size:11px;color:var(--muted);text-align:center;margin-top:15px}.top-user{display:flex;gap:8px;align-items:center}.logout-btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 12px;color:var(--ink);cursor:pointer;font:inherit;font-size:12px}
+.app{display:none}
 </style></head><body>
-<div id="authScreen">
-  <form class="auth-card" id="loginForm">
-    <div class="gem" style="margin-bottom:16px">✧</div>
-    <h2>Pedra da Lua</h2>
-    <p>Entre para acessar sua gestão de vendas e joias.</p>
-    <div class="field"><label for="loginEmail">E-mail</label><input id="loginEmail" type="email" autocomplete="username" required placeholder="Seu e-mail"></div>
-    <div class="field"><label for="loginPassword">Senha</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Sua senha"></div>
-    <button class="btn primary" id="loginButton" type="submit">Entrar</button>
-    <button class="btn" id="resetPassword" type="button">Esqueci minha senha</button>
-    <div class="auth-error" id="authError" role="alert"></div>
-  </form>
-</div>
-<div class="app" id="mainApp" style="display:none">
-<header class="top"><div class="brand"><div class="gem">✧</div><div><h1>Pedra da Lua</h1><small>GESTÃO DE VENDAS & JOIAS</small></div></div><input class="month" type="month" id="monthFilter" aria-label="Mês de referência"></header>
+<div class="auth-screen" id="authScreen"><div class="auth-card">
+ <div class="auth-brand"><div class="gem">✧</div><h1>Pedra da Lua</h1><div class="small">GESTÃO DE VENDAS & JOIAS</div></div>
+ <h2>Acesso ao sistema</h2><div class="sub">Digite a senha compartilhada para acessar a Pedra da Lua.</div>
+ <form id="authForm"><div class="field"><label for="authPassword">Senha de acesso</label><input id="authPassword" type="password" autocomplete="current-password" required placeholder="Digite a senha"></div>
+ <div class="auth-actions"><button class="btn primary" id="loginBtn" type="submit">Entrar</button></div></form>
+ <div class="auth-error" id="authError"></div><div class="auth-note">Acesso compartilhado · Pedra da Lua</div>
+</div></div>
+<div class="app">
+<header class="top"><div class="brand"><div class="gem">✧</div><div><h1>Pedra da Lua</h1><small>GESTÃO DE VENDAS & JOIAS</small></div></div><div class="top-user"><input class="month" type="month" id="monthFilter" aria-label="Mês de referência"><button class="logout-btn" id="logoutBtn" type="button">Sair</button></div></header>
 <nav>
 <button class="active" data-page="dashboard">◫ Dashboard</button><button data-page="sales">◇ Vendas</button><button data-page="clients">♡ Clientes</button><button data-page="receipts">▤ Recebimentos</button><button data-page="closing">◉ Fechamento</button><button data-page="ownPurchases">♡ Compras da Bianca</button>
 </nav>
@@ -125,7 +117,7 @@ nav button.active,.btn.primary{background:#B91C68;color:#fff}
 <section class="page" id="receipts"><div class="heading"><div><h2>Recebimentos</h2><div class="sub">Veja quando o dinheiro entra e a qual mês de venda cada parcela pertence.</div></div></div><div class="card" id="receiptsTable"></div></section>
 <section class="page" id="closing"><div class="heading"><div><h2>Fechamento mensal</h2><div class="sub">O repasse de 40% considera todas as vendas do mês, independentemente do parcelamento.</div></div></div><div id="closingPage"></div></section>
 <section class="page" id="ownPurchases"><div class="heading"><div><h2>Compras da Bianca</h2><div class="sub">Registre as joias que a Bianca fica para uso próprio. Essas compras geram somente o repasse de 40% para a empresa.</div></div></div><div class="card section"><h3>Registrar compra própria</h3><form id="ownPurchaseForm" class="formgrid"><div class="field"><label>Data da compra</label><input type="date" name="date" required></div><div class="field"><label>Valor total (R$)</label><input type="number" name="amount" min="0.01" step=".01" required placeholder="0,00"></div><div class="field full"><label>Descrição (opcional)</label><input name="description" placeholder="Ex.: conjunto de colar e brinco"></div><div class="field full"><div class="notice" id="ownPurchasePreview">Repasse da empresa: R$ 0,00</div></div><div class="field full"><button class="btn primary" type="submit">＋ Salvar compra própria</button></div></form></div><div class="card section"><h3>Compras registradas</h3><div id="ownPurchasesList"></div></div></section>
-<footer>Pedra da Lua · Dados sincronizados com segurança na nuvem. <span id="syncStatus">Conectando…</span> <button class="btn" id="logoutButton" type="button">Sair</button></footer></div>
+<footer>Pedra da Lua · Dados sincronizados com segurança pela sua conta.</footer></div>
 <div class="modal" id="saleModal"><div class="modalbox"><h3>Nova venda</h3><form id="saleForm"><div class="formgrid">
 <div class="field"><label>Cliente</label><input required name="client" list="clientOptions" placeholder="Nome da cliente"><datalist id="clientOptions"></datalist></div>
 <div class="field"><label>Data da venda</label><input required type="date" name="date"></div>
@@ -138,30 +130,73 @@ nav button.active,.btn.primary{background:#B91C68;color:#fff}
 </div><div class="notice" style="margin-top:13px" id="saleCalc">Empresa: R$ 0,00 · Bianca: R$ 0,00</div><div class="actions"><button type="button" class="btn" onclick="closeSale()">Cancelar</button><button class="btn primary">Salvar venda</button></div></form></div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL="https://bsglhszentqyoalykznc.supabase.co";
-const SUPABASE_ANON_KEY="sb_publishable_EBs5FG1i67Rhtz8c2sgjug_KPq_T2TP";
-const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
-let currentUser=null,saveQueue=Promise.resolve(),loadingRemote=true;
+const SUPABASE_URL='https://bsglhszentqyoalykznc.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_EBs5FG1i67Rhtz8c2sgjug_KPq_T2TP';
+const API_URL=SUPABASE_URL+'/functions/v1/pedra-lua-api';
 const $=s=>document.querySelector(s), money=n=>(Number(n)||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}),today=()=>new Date().toISOString().slice(0,10);
-let sales=JSON.parse(localStorage.getItem('pdl_sales_v2')||'[]'), closings=JSON.parse(localStorage.getItem('pdl_closings_v2')||'{}'), consignments=JSON.parse(localStorage.getItem('pdl_consignments_v2')||'{}'), ownPurchases=JSON.parse(localStorage.getItem('pdl_own_purchases_v1')||'[]'),clientFocus='';
-if(!Array.isArray(sales))sales=[];
-$('#monthFilter').value=today().slice(0,7);$('#monthFilter').addEventListener('change',render);
-const ownForm=$('#ownPurchaseForm');if(ownForm){ownForm.date.value=today();ownForm.addEventListener('input',()=>{let v=Number(ownForm.amount.value)||0;$('#ownPurchasePreview').textContent='Repasse da empresa (40%): '+money(v*.4)});ownForm.addEventListener('submit',e=>{e.preventDefault();let fd=new FormData(ownForm),amount=Number(fd.get('amount'))||0;if(amount<=0)return;ownPurchases.unshift({id:Date.now(),date:fd.get('date'),amount,description:String(fd.get('description')||'').trim(),transferred:false});persist();ownForm.reset();ownForm.date.value=today();$('#ownPurchasePreview').textContent='Repasse da empresa (40%): R$ 0,00';render()})}
-document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>goPage(b.dataset.page));
-function period(){return $('#monthFilter').value||today().slice(0,7)}function monthSales(){return sales.filter(s=>s.date.slice(0,7)===period())}function allParts(){return sales.flatMap(s=>s.parts.map((p,i)=>({...p,sale:s,index:i})))}function persist(){
- localStorage.setItem('pdl_sales_v2',JSON.stringify(sales));
- localStorage.setItem('pdl_closings_v2',JSON.stringify(closings));
- localStorage.setItem('pdl_consignments_v2',JSON.stringify(consignments));
- localStorage.setItem('pdl_own_purchases_v1',JSON.stringify(ownPurchases));
- render();
- if(!currentUser||loadingRemote)return;
- const payload={user_id:currentUser.id,vendas:sales,compras_bianca:ownPurchases,consignacoes:consignments,fechamentos:closings,atualizado_em:new Date().toISOString()};
- saveQueue=saveQueue.then(async()=>{
-   const {error}=await sb.from('pedra_lua_dados').upsert(payload,{onConflict:'user_id'});
-   if(error)throw error;
-   $('#syncStatus').textContent='Sincronizado ✓';
- }).catch(err=>{console.error('Falha ao sincronizar:',err);$('#syncStatus').textContent='Falha ao sincronizar — seus dados continuam neste aparelho';});
+let authToken=sessionStorage.getItem('pdl_shared_session')||'',isSaving=false,saveQueue=Promise.resolve();
+let sales=[], closings={}, consignments={}, ownPurchases=[],clientFocus='';
+const authScreen=$('#authScreen'),authError=$('#authError'),app=$('.app');
+function showAuthError(message){authError.textContent=message;authError.style.display='block'}
+function hideAuthError(){authError.textContent='';authError.style.display='none'}
+function showApp(){authScreen.style.display='none';app.style.display='block';$('#logoutBtn').style.display='inline-block'}
+function showLogin(){authScreen.style.display='flex';app.style.display='none';$('#logoutBtn').style.display='none'}
+async function apiRequest(action,payload={},withSession=true){
+ const headers={'Content-Type':'application/json','apikey':SUPABASE_ANON_KEY};
+ if(withSession&&authToken)headers.Authorization='Bearer '+authToken;
+ const response=await fetch(API_URL,{method:'POST',headers,body:JSON.stringify({action,...payload})});
+ let result={};try{result=await response.json()}catch(_){}
+ if(!response.ok)throw new Error(result.error||result.message||('Erro na comunicação com o servidor ('+response.status+').'));
+ if(result.error)throw new Error(result.error);
+ return result;
 }
+async function loadCloudData(){
+ const result=await apiRequest('load');
+ const d=result.dados||result.data?.dados||result.data||{};
+ sales=Array.isArray(d.sales)?d.sales:[];
+ closings=d.closings&&typeof d.closings==='object'?d.closings:{};
+ consignments=d.consignments&&typeof d.consignments==='object'?d.consignments:{};
+ ownPurchases=Array.isArray(d.ownPurchases)?d.ownPurchases:[];
+}
+async function saveCloudData(){
+ if(!authToken)return;
+ const snapshot={sales,closings,consignments,ownPurchases};
+ saveQueue=saveQueue.then(async()=>{
+  isSaving=true;
+  try{await apiRequest('save',{dados:snapshot});}
+  catch(e){
+   if(/401|403|sess[aã]o|token/i.test(e.message)){authToken='';sessionStorage.removeItem('pdl_shared_session');showLogin();}
+   alert('Não foi possível sincronizar os dados com o Supabase.\n\n'+(e.message||'Verifique se a Edge Function pedra-lua-api está publicada e configurada.'));
+  }finally{isSaving=false;}
+ });
+ return saveQueue;
+}
+async function startSession(token){
+ authToken=token;sessionStorage.setItem('pdl_shared_session',token);
+ try{await loadCloudData();showApp();$('#monthFilter').value=today().slice(0,7);render();}
+ catch(e){authToken='';sessionStorage.removeItem('pdl_shared_session');showLogin();showAuthError('Não foi possível carregar os dados: '+(e.message||'Confira a Edge Function e a tabela pedra_lua_app.'));}
+}
+$('#authForm').addEventListener('submit',async e=>{
+ e.preventDefault();hideAuthError();
+ const password=$('#authPassword').value;
+ if(!password)return showAuthError('Digite a senha de acesso.');
+ const button=$('#loginBtn');button.disabled=true;button.textContent='Verificando...';
+ try{
+  const result=await apiRequest('login',{password},false);
+  const token=result.token||result.access_token||result.session?.token;
+  if(!token)throw new Error('O servidor não retornou o token de acesso. Confira a Edge Function pedra-lua-api.');
+  $('#authPassword').value='';await startSession(token);
+ }catch(err){showAuthError(err.message||'Não foi possível validar a senha.');}
+ finally{button.disabled=false;button.textContent='Entrar';}
+});
+$('#logoutBtn').addEventListener('click',()=>{authToken='';sessionStorage.removeItem('pdl_shared_session');sales=[];closings={};consignments={};ownPurchases=[];showLogin();});
+(async()=>{
+ if(authToken){await startSession(authToken);}else showLogin();
+})();
+$('#monthFilter').addEventListener('change',render);
+const ownForm=$('#ownPurchaseForm');if(ownForm){ownForm.date.value=today();ownForm.addEventListener('input',()=>{let v=Number(ownForm.amount.value)||0;$('#ownPurchasePreview').textContent='Repasse da empresa (40%): '+money(v*.4)});ownForm.addEventListener('submit',e=>{e.preventDefault();let fd=new FormData(ownForm),amount=Number(fd.get('amount'))||0;if(amount<=0)return;ownPurchases.unshift({id:Date.now(),date:fd.get('date'),amount,description:String(fd.get('description')||'').trim(),transferred:false});saveCloudData();ownForm.reset();ownForm.date.value=today();$('#ownPurchasePreview').textContent='Repasse da empresa (40%): R$ 0,00';render()})}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>goPage(b.dataset.page));
+function period(){return $('#monthFilter').value||today().slice(0,7)}function monthSales(){return sales.filter(s=>s.date.slice(0,7)===period())}function allParts(){return sales.flatMap(s=>s.parts.map((p,i)=>({...p,sale:s,index:i})))}function persist(){render();saveCloudData()}
 $('#consignmentValue').addEventListener('change',e=>{consignments[period()]=Math.max(0,Number(e.target.value)||0);persist()});
 function openSale(){let f=$('#saleForm');f.reset();f.date.value=today();f.firstDue.value=today();$('#products').innerHTML='';addProduct();$('#saleModal').classList.add('show');calcForm()}
 function closeSale(){$('#saleModal').classList.remove('show')}
@@ -174,7 +209,7 @@ function status(s){let n=s.parts.filter(p=>p.paid).length,late=s.parts.some(p=>!
 function saleCard(s){let [st,cl]=status(s),n=s.parts.filter(p=>p.paid).length;return `<article class="sale-card"><div>${s.photo?`<img class="thumb" src="${s.photo}">`:`<div class="thumb">✧</div>`}</div><div class="sale-main"><div class="sale-title">${esc(s.client)}</div><div class="sale-meta">${s.date.split('-').reverse().join('/')} · ${s.products.length} produto(s) · ${s.count} parcela(s)</div><div class="tags"><span class="sale-status ${cl}">${st}</span><span class="chip">${n}/${s.count} parcelas pagas</span><span class="chip">Desconto: ${money(s.discount||0)}</span></div><div class="sale-meta">${s.products.map(p=>`${esc(p.name)} (${p.qty}x)`).join(' · ')}</div><div class="tags">${s.parts.map((p,i)=>`<span class="chip ${p.paid?'paid':p.due<today()?'pending':''}">${i+1}/${s.count} · ${money(p.value)} · ${p.paid?'✓ Paga':p.due<today()?'! Atrasada':'<span class="spin-icon">⟳</span> A receber'}</span>`).join('')}</div></div><div class="sale-tools"><div class="sale-total">${money(s.amount)}</div><button class="trash" title="Excluir venda" onclick="removeSale(${s.id})">♲</button></div></article>`}
 function goPage(id){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));clientFocus='';render();window.scrollTo({top:0,behavior:'smooth'});}
 function openClient(name){clientFocus=name;document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page==='clients'));document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='clients'));render();window.scrollTo({top:0,behavior:'smooth'});}
-function monthOwnPurchases(){return ownPurchases.filter(x=>x.date.slice(0,7)===period())}function moneySum(arr,fn){return arr.reduce((a,x)=>a+fn(x),0)}function toggleOwnTransferred(id){let x=ownPurchases.find(p=>p.id===id);if(x)x.transferred=!x.transferred;persist()}function deleteOwnPurchase(id){if(confirm('Excluir esta compra própria?')){ownPurchases=ownPurchases.filter(x=>x.id!==id);persist()}}
+function monthOwnPurchases(){return ownPurchases.filter(x=>x.date.slice(0,7)===period())}function moneySum(arr,fn){return arr.reduce((a,x)=>a+fn(x),0)}function toggleOwnTransferred(id){let x=ownPurchases.find(p=>p.id===id);if(x)x.transferred=!x.transferred;saveCloudData();render()}function deleteOwnPurchase(id){if(confirm('Excluir esta compra própria?')){ownPurchases=ownPurchases.filter(x=>x.id!==id);saveCloudData();render()}}
 function render(){let ss=monthSales(),total=ss.reduce((a,s)=>a+s.amount,0),cons=Number(consignments[period()]||0),min=cons*.3,pct=min?total/min*100:0,received=allParts().filter(x=>x.paid&&(x.paidAt||x.due||x.sale.date).slice(0,7)===period()).reduce((a,x)=>a+x.value,0),pending=allParts().filter(x=>!x.paid&&x.due.slice(0,7)===period()).reduce((a,x)=>a+x.value,0),due=total*.4,earned=total*.6,closed=!!closings[period()],ownMonth=monthOwnPurchases(),ownTotal=moneySum(ownMonth,x=>x.amount),ownDue=ownTotal*.4,companyDue=due+ownDue,companyPending=(closed?0:due)+moneySum(ownMonth.filter(x=>!x.transferred),x=>x.amount*.4),salesPending=ss.reduce((a,s)=>a+s.parts.filter(p=>!p.paid).reduce((x,p)=>x+p.value,0),0);
 $('#consignmentValue').value=cons||'';$('#minimumAmount').textContent=money(min);$('#minimumGauge').style.strokeDashoffset=String(283-283*Math.min(100,pct)/100);$('#minimumPercent').textContent=Math.round(pct)+'%';$('#minimumSold').textContent='Vendido: '+money(total);$('#minimumStatus').textContent=min?(total>=min?'Mínimo alcançado! Acima do mínimo em '+money(total-min)+'.':'Faltam '+money(min-total)+' para atingir o mínimo.'):'Informe o consignado para calcular o mínimo.';
 $('#metrics').innerHTML=[['Dinheiro recebido no mês',money(received),'green','Entradas efetivas de todas as vendas'],['A receber neste mês',money(pending),'amber','Parcelas com vencimento neste mês'],['Repasse à empresa no mês',money(companyDue),'pink','40% das vendas + compras próprias'],['Ainda falta repassar',money(companyPending),'amber','Valores ainda não marcados como pagos']].map(x=>`<div class="card metric"><label>${x[0]}</label><strong class="${x[2]}">${x[1]}</strong><span class="small">${x[3]}</span></div>`).join('');$('#salesOriginMetrics').innerHTML=[['Total vendido a clientes',money(total),''],['Parte da Bianca · 60%',money(earned),'pink'],['Parte da empresa · 40%',money(due),''],['Ainda a receber dessas vendas',money(salesPending),'amber']].map(x=>`<div class="card metric"><label>${x[0]}</label><strong class="${x[2]}">${x[1]}</strong><span class="small">${x[0].includes('receber')?'Parcelas em aberto das vendas deste mês':'Somente vendas realizadas no mês selecionado'}</span></div>`).join('');
@@ -192,58 +227,5 @@ $('#closingPage').innerHTML=`<div class="grid"><div class="card metric"><label>V
 function togglePart(id,i,v){let s=sales.find(x=>x.id===id);s.parts[i].paid=v;s.parts[i].paidAt=v?today():'';persist()}
 function toggleClosing(){if(closings[period()])delete closings[period()];else closings[period()]={paidAt:today()};persist()}
 function removeSale(id){if(confirm('Excluir esta venda e todas as suas parcelas?')){sales=sales.filter(s=>s.id!==id);clientFocus='';persist()}}
-async function startApp(){
- $('#syncStatus').textContent='Carregando dados…';
- const {data:{session},error:sessionError}=await sb.auth.getSession();
- if(sessionError)throw sessionError;
- if(!session){$('#authScreen').style.display='flex';$('#mainApp').style.display='none';return;}
- currentUser=session.user;
- const {data:remote,error}=await sb.from('pedra_lua_dados').select('vendas,compras_bianca,consignacoes,fechamentos').eq('user_id',currentUser.id).maybeSingle();
- if(error)throw error;
- if(remote){
-   sales=Array.isArray(remote.vendas)?remote.vendas:[];
-   ownPurchases=Array.isArray(remote.compras_bianca)?remote.compras_bianca:[];
-   consignments=remote.consignacoes&&typeof remote.consignacoes==='object'?remote.consignacoes:{};
-   closings=remote.fechamentos&&typeof remote.fechamentos==='object'?remote.fechamentos:{};
- }else{
-   // Primeira entrada: migra os dados locais existentes para a conta autenticada.
-   const hasLocal=localStorage.getItem('pdl_sales_v2')!==null||localStorage.getItem('pdl_own_purchases_v1')!==null;
-   if(hasLocal){
-     const {error:saveError}=await sb.from('pedra_lua_dados').upsert({user_id:currentUser.id,vendas:sales,compras_bianca:ownPurchases,consignacoes:consignments,fechamentos:closings,atualizado_em:new Date().toISOString()},{onConflict:'user_id'});
-     if(saveError)throw saveError;
-   }else{
-     sales=[];ownPurchases=[];consignments={};closings={};
-   }
- }
- localStorage.setItem('pdl_sales_v2',JSON.stringify(sales));
- localStorage.setItem('pdl_own_purchases_v1',JSON.stringify(ownPurchases));
- localStorage.setItem('pdl_consignments_v2',JSON.stringify(consignments));
- localStorage.setItem('pdl_closings_v2',JSON.stringify(closings));
- loadingRemote=false;
- $('#authScreen').style.display='none';$('#mainApp').style.display='block';
- $('#syncStatus').textContent='Conectado · '+(currentUser.email||'');
- render();
-}
-$('#loginForm').addEventListener('submit',async e=>{
- e.preventDefault();const button=$('#loginButton'),errorBox=$('#authError');
- button.disabled=true;button.textContent='Entrando…';errorBox.style.display='none';
- try{
-   const {data,error}=await sb.auth.signInWithPassword({email:$('#loginEmail').value.trim(),password:$('#loginPassword').value});
-   if(error)throw error;
-   currentUser=data.user;await startApp();
- }catch(err){errorBox.textContent=err.message||'Não foi possível entrar. Confira seu e-mail e senha.';errorBox.style.display='block';}
- finally{button.disabled=false;button.textContent='Entrar';}
-});
-$('#resetPassword').addEventListener('click',async()=>{
- const email=$('#loginEmail').value.trim(),box=$('#authError');
- if(!email){box.textContent='Informe seu e-mail para receber o link de recuperação.';box.style.display='block';return;}
- const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});
- box.textContent=error?error.message:'Se o e-mail estiver cadastrado, você receberá um link para redefinir a senha.';
- box.style.display='block';
-});
-$('#logoutButton').addEventListener('click',async()=>{await sb.auth.signOut();currentUser=null;loadingRemote=true;$('#mainApp').style.display='none';$('#authScreen').style.display='flex';});
-sb.auth.onAuthStateChange((event,session)=>{
- if(event==='SIGNED_OUT'){currentUser=null;$('#mainApp').style.display='none';$('#authScreen').style.display='flex';}
-});
-(async()=>{try{await startApp();}catch(err){console.error(err);$('#authError').textContent='Não foi possível conectar ao Supabase: '+(err.message||'verifique a tabela e as políticas RLS.');$('#authError').style.display='block';$('#authScreen').style.display='flex';}})();
+render();
 </script></body></html>
