@@ -132,7 +132,7 @@ nav button.active,.btn.primary{background:#B91C68;color:#fff}
 <script>
 const SUPABASE_URL='https://bsglhszentqyoalykznc.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_EBs5FG1i67Rhtz8c2sgjug_KPq_T2TP';
-const API_URL=SUPABASE_URL+'/functions/v1/pedra-lua-api';
+const API_URL=SUPABASE_URL+'/functions/v1/hyper-processor';
 const $=s=>document.querySelector(s), money=n=>(Number(n)||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}),today=()=>new Date().toISOString().slice(0,10);
 let authToken=sessionStorage.getItem('pdl_shared_session')||'',isSaving=false,saveQueue=Promise.resolve();
 let sales=[], closings={}, consignments={}, ownPurchases=[],clientFocus='';
